@@ -49,8 +49,10 @@ public class CallLogActivity extends Activity {
 
     private static final int TAB_INDEX_ALL = 0;
     private static final int TAB_INDEX_MISSED = 1;
+    private static final int TAB_INDEX_INCOMING = 2;
+    private static final int TAB_INDEX_OUTGOING = 2;
 
-    private static final int TAB_INDEX_COUNT = 2;
+    private static final int TAB_INDEX_COUNT = 4;
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
@@ -65,6 +67,12 @@ public class CallLogActivity extends Activity {
                     return mAllCallsFragment;
                 case TAB_INDEX_MISSED:
                     mMissedCallsFragment = new CallLogFragment(Calls.MISSED_TYPE);
+                    return mMissedCallsFragment;
+                case TAB_INDEX_INCOMING:
+                    mIncomingCallsFragment = new CallLogFragment(Calls.INCOMING_TYPE);
+                    return mMissedCallsFragment;
+                case TAB_INDEX_OUTGOING:
+                    mOutgoingCallsFragment = new CallLogFragment(Calls.OUTGOING_TYPE);
                     return mMissedCallsFragment;
             }
             throw new IllegalStateException("No fragment at position " + position);
@@ -135,6 +143,20 @@ public class CallLogActivity extends Activity {
         missedTab.setText(missedTitle);
         missedTab.setTabListener(mTabListener);
         actionBar.addTab(missedTab);
+
+        final Tab incomingTab = actionBar.newTab();
+        final String incomingTitle = getString(R.string.call_log_incoming_title);
+        missedTab.setContentDescription(incomingTitle);
+        missedTab.setText(incomingTitle);
+        missedTab.setTabListener(mTabListener);
+        actionBar.addTab(incomingTab);
+
+        final Tab outgoingTab = actionBar.newTab();
+        final String outgoingTitle = getString(R.string.call_log_outgoing_title);
+        missedTab.setContentDescription(outgoingTitle);
+        missedTab.setText(outgoingTitle);
+        missedTab.setTabListener(mTabListener);
+        actionBar.addTab(outgoingTab);
 
         mViewPager = (ViewPager) findViewById(R.id.call_log_pager);
         mViewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
